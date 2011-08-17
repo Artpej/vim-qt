@@ -3479,7 +3479,7 @@ exec_on_server(parmp)
 {
     if (parmp->serverName_arg == NULL || *parmp->serverName_arg != NUL)
     {
-# ifdef WIN32
+# if defined(WIN32) || defined(FEAT_GUI_QT)
 	/* Initialise the client/server messaging infrastructure. */
 	serverInitMessaging();
 # endif
@@ -3503,7 +3503,7 @@ exec_on_server(parmp)
 	 * clipboard first, it's further down. */
 	parmp->servername = serverMakeName(parmp->serverName_arg,
 							      parmp->argv[0]);
-# ifdef WIN32
+# if defined(WIN32) || defined(FEAT_GUI_QT)
 	if (parmp->servername != NULL)
 	{
 	    serverSetName(parmp->servername);
@@ -3737,7 +3737,7 @@ cmdsrv_main(argc, argv, serverName_arg, serverStr)
 		vim_memset(done, 0, numFiles);
 		while (memchr(done, 0, numFiles) != NULL)
 		{
-# ifdef WIN32
+# if defined(WIN32) || defined(FEAT_GUI_QT)
 		    p = serverGetReply(srv, NULL, TRUE, TRUE);
 		    if (p == NULL)
 			break;
@@ -3766,7 +3766,7 @@ cmdsrv_main(argc, argv, serverName_arg, serverStr)
 	{
 	    if (i == *argc - 1)
 		mainerr_arg_missing((char_u *)argv[i]);
-# ifdef WIN32
+# if defined(WIN32) || defined(FEAT_GUI_QT)
 	    /* Win32 always works? */
 	    if (serverSendToVim(sname, (char_u *)argv[i + 1],
 						    &res, NULL, 1, FALSE) < 0)
@@ -3789,7 +3789,7 @@ cmdsrv_main(argc, argv, serverName_arg, serverStr)
 	}
 	else if (STRICMP(argv[i], "--serverlist") == 0)
 	{
-# ifdef WIN32
+# if defined(WIN32) || defined(FEAT_GUI_QT)
 	    /* Win32 always works? */
 	    res = serverGetVimNames();
 # else
